@@ -35,19 +35,25 @@ st.set_page_config(
     initial_sidebar_state="auto"  # Auto collapse on mobile
 )
 
-# Custom CSS - Mobile Optimized
+# Custom CSS - Mobile Optimized & Pretty
 st.markdown("""
 <style>
-    /* Main header - responsive */
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    /* Main header - responsive and chic */
     .main-header {
-        font-size: clamp(1.5rem, 5vw, 3rem);
-        font-weight: bold;
+        font-size: clamp(1.2rem, 4vw, 2.5rem);
+        font-weight: 700;
         text-align: center;
         background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        padding: 0.5rem;
-        margin-bottom: 1rem;
+        padding: 0.3rem 0.5rem;
+        margin: 0.5rem 0;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
     }
     
     /* Metric cards - mobile friendly */
@@ -108,27 +114,47 @@ st.markdown("""
         background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
     }
     
-    /* Mobile optimizations */
+    /* Mobile optimizations - Prevent overlapping */
     @media (max-width: 768px) {
         /* Reduce padding on mobile */
         .block-container {
-            padding: 1rem 1rem !important;
+            padding: 0.5rem 0.5rem !important;
+            max-width: 100% !important;
         }
         
         /* Stack metrics vertically on mobile */
         [data-testid="column"] {
             min-width: 100% !important;
             flex: 1 1 100% !important;
+            margin-bottom: 0.5rem !important;
         }
         
-        /* Smaller font sizes for mobile */
+        /* Fix metric spacing */
         .stMetric {
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
+            padding: 0.5rem !important;
+            margin: 0.25rem 0 !important;
+        }
+        
+        /* Metric labels - prevent overlap */
+        .stMetric label {
+            font-size: 0.75rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 0.2rem !important;
+        }
+        
+        /* Metric values - prevent overflow */
+        .stMetric [data-testid="stMetricValue"] {
+            font-size: 1.2rem !important;
+            line-height: 1.3 !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
         
         /* Reduce chart height on mobile */
         .js-plotly-plot {
-            height: 300px !important;
+            height: 250px !important;
+            margin: 0.5rem 0 !important;
         }
         
         /* Sidebar auto-hide on mobile */
@@ -138,7 +164,40 @@ st.markdown("""
         
         /* Better spacing for tables */
         .dataframe {
+            font-size: 0.75rem !important;
+            line-height: 1.3 !important;
+        }
+        
+        /* Section headers - smaller on mobile */
+        h3 {
+            font-size: 1rem !important;
+            margin: 0.5rem 0 !important;
+            line-height: 1.3 !important;
+        }
+        
+        /* Markdown text - prevent overflow */
+        .markdown-text-container {
             font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+            word-wrap: break-word !important;
+        }
+        
+        /* Tabs - more compact */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 0.25rem !important;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            font-size: 0.8rem !important;
+            padding: 0.4rem 0.6rem !important;
+        }
+        
+        /* Signal cards - more compact */
+        .signal-long, .signal-bearish, .signal-flat {
+            font-size: 1rem !important;
+            padding: 0.75rem !important;
+            margin: 0.5rem 0 !important;
+            line-height: 1.3 !important;
         }
     }
     
@@ -162,6 +221,63 @@ st.markdown("""
     /* Scrollable tables on mobile */
     .dataframe-container {
         overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Pretty animations */
+    .stMetric, .signal-long, .signal-bearish, .signal-flat {
+        transition: all 0.3s ease !important;
+    }
+    
+    /* Smooth scroll */
+    html {
+        scroll-behavior: smooth !important;
+    }
+    
+    /* Better spacing globally */
+    .element-container {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Chic colors for text */
+    h1, h2, h3, h4, h5, h6 {
+        color: #1e293b !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Better readability */
+    p, li, span {
+        line-height: 1.6 !important;
+    }
+    
+    /* Prettier tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: #f8fafc !important;
+        border-radius: 8px !important;
+        padding: 0.25rem !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 6px !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: white !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Remove extra spacing on mobile */
+    @media (max-width: 768px) {
+        .element-container {
+            margin-bottom: 0.3rem !important;
+        }
+        
+        /* Compact headings */
+        h1, h2, h3 {
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.3rem !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -271,8 +387,8 @@ st.sidebar.info(
 
 # Main content
 def main():
-    # Header
-    st.markdown('<h1 class="main-header">📈 NIFTY Trading Strategy</h1>', 
+    # Header - Chic and compact
+    st.markdown('<h1 class="main-header">📈 NIFTY Trading</h1>', 
                 unsafe_allow_html=True)
     
     # Tabs
